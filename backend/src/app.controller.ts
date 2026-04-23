@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('api')
+  getApi() {
+    return { message: 'Hello from the backend!' };
+  }
 }
