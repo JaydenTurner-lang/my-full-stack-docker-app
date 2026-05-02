@@ -1,15 +1,12 @@
 name: Build and Push Docker Images
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
-    types:
-      - closed
+      - feature/pipeline
 
 jobs:
   build-and-push:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -52,4 +49,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/nginx:${{ steps.vars.outputs.sha_short }}
-            #
