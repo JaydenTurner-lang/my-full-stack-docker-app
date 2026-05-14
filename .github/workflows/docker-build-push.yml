@@ -57,9 +57,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Download compose file
-        run: |
-          curl -o docker-compose.yml https://raw.githubusercontent.com/innoetech-dev/my-full-stack-docker-app/refs/heads/feature/v2-purple/deploy/ci_docker-compose.yml
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy compose file
+        run: cp docker-compose.yml ./docker-compose.yml
 
       - name: Replace placeholders
         run: |
@@ -70,5 +72,4 @@ jobs:
         run: |
           docker-compose pull
           docker-compose up -d
-
 
