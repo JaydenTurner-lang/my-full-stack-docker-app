@@ -1,21 +1,16 @@
+version: "3.9"
+
 services:
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx-container
+  frontend:
+    image: jaydenturnerlang/nginx:YOUR_SHA
+    container_name: frontend-container
     ports:
       - "80:80"
     depends_on:
-      - frontend
       - backend
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend-container
+
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: jaydenturnerlang/backend:YOUR_SHA
     container_name: backend-container
+    ports:
+      - "3000:3000"
