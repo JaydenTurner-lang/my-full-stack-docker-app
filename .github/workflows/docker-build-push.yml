@@ -29,8 +29,8 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./nginx
+          file: ./nginx/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
@@ -54,12 +54,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download updated docker-compose.yml
+        run: |
+          curl -o ~/app/deploy/docker-compose.yml https://raw.githubusercontent.com/innoetech-dev/my-full-stack-docker-app/refs/heads/feature/load-balancer/ci_docker-compose.yml
+
       - name: Replace placeholders in docker-compose.yml
         run: |
-          sed -i "s/YOUR_DOCKERHUB_USERNAME/${{ secrets.DOCKERHUB_USERNAME }}/g" docker-compose.yml
-          sed -i "s/YOUR_SHA/${{ needs.build-and-push.outputs.sha }}/g" docker-compose.yml
+          sed -i "s/YOUR_DOCKERHUB_USERNAME/${{ secrets.DOCKERHUB_USERNAME }}/g" ~/app/deploy/docker-compose.yml
+          sed -i "s/YOUR_SHA/${{ needs.build-and-push.outputs.sha }}/g" ~/app/deploy/docker-compose.yml
 
       - name: Pull and restart containers
         run: |
-          docker compose pull
-          docker compose up -d
+          docker compose -f ~/app/deploy/docker-compose.yml pull
+          docker compose -f ~/app/deploy/docker-compose.yml up -d
