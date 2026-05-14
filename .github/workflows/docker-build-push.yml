@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build and Deploy Full Stack App
 
 on:
   push:
@@ -7,7 +7,6 @@ on:
 
 jobs:
   build-and-push:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
       sha: ${{ steps.vars.outputs.sha_short }}
@@ -71,3 +70,4 @@ jobs:
         run: |
           docker compose pull
           docker compose up -d
+
