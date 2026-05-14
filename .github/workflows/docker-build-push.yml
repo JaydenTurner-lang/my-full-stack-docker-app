@@ -65,5 +65,6 @@ jobs:
 
       - name: Pull and restart containers
         run: |
-          docker compose -f ~/app/deploy/docker-compose.yml pull
-          docker compose -f ~/app/deploy/docker-compose.yml up -d
+          docker-compose -f ~/app/deploy/docker-compose.yml pull
+          docker-compose -f ~/app/deploy/docker-compose.yml up -d
+
