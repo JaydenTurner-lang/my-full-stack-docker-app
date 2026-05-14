@@ -68,6 +68,7 @@ jobs:
 
       - name: Pull and restart containers
         run: |
-          docker compose pull
-          docker compose up -d
+          docker-compose pull
+          docker-compose up -d
+
 
