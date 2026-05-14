@@ -7,11 +7,19 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend
+      - backend-1
+      - backend-2
 
-  backend:
+  backend-1:
     image: jaydenturnerlang/backend:YOUR_SHA
-    container_name: backend-container
+    container_name: backend-container-1
     ports:
-      - "3000:3000"
+      - "3001:3000"
+
+  backend-2:
+    image: jaydenturnerlang/backend:YOUR_SHA
+    container_name: backend-container-2
+    ports:
+      - "3002:3000"
+
 
