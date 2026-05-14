@@ -60,9 +60,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy compose file
-        run: cp docker-compose.yml ./docker-compose.yml
-
       - name: Replace placeholders
         run: |
           sed -i "s/YOUR_DOCKERHUB_USERNAME/${{ secrets.DOCKERHUB_USERNAME }}/g" docker-compose.yml
@@ -72,4 +69,3 @@ jobs:
         run: |
           docker-compose pull
           docker-compose up -d
-
