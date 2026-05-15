@@ -26,16 +26,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # ⭐ FRONTEND BUILD
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./nginx
-          file: ./nginx/Dockerfile
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/nginx:${{ steps.vars.outputs.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ steps.vars.outputs.sha }}
 
+      # ⭐ BACKEND BUILD
       - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
@@ -45,6 +47,17 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ steps.vars.outputs.sha }}
+
+      # ⭐ NGINX BUILD
+      - name: Build and push nginx
+        uses: docker/build-push-action@v5
+        with:
+          context: ./nginx
+          file: ./nginx/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx:${{ steps.vars.outputs.sha }}
 
   deploy:
     needs: build-and-push
@@ -67,4 +80,3 @@ jobs:
         run: |
           docker-compose -f ~/app/deploy/docker-compose.yml pull
           docker-compose -f ~/app/deploy/docker-compose.yml up -d
-
