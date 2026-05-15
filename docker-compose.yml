@@ -2,24 +2,36 @@ version: "3.9"
 
 services:
   frontend:
-    image: jaydenturnerlang/nginx:YOUR_SHA
     container_name: frontend-container
+    image: jaydenturnerlang/frontend:YOUR_SHA
     ports:
       - "80:80"
     depends_on:
-      - backend-1
-      - backend-2
+      - backend1
+      - backend2
 
-  backend-1:
-    image: jaydenturnerlang/backend:YOUR_SHA
+  backend1:
     container_name: backend-container-1
+    image: jaydenturnerlang/backend:YOUR_SHA
     ports:
       - "3001:3000"
 
-  backend-2:
-    image: jaydenturnerlang/backend:YOUR_SHA
+  backend2:
     container_name: backend-container-2
+    image: jaydenturnerlang/backend:YOUR_SHA
     ports:
       - "3002:3000"
 
+  nginx:
+    container_name: nginx-container
+    image: jaydenturnerlang/nginx:YOUR_SHA
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - backend1
+      - backend2
 
+networks:
+  default:
+    driver: bridge
